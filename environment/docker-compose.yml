@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   axon-server:
-    image: axoniq/axonserver
+    image: 'axoniq/axonserver:latest'  
+    environment: 
+      - 'AXONIQ_AXONSERVER_STANDALONE=TRUE'
     container_name: axon-server
     restart: always
     ports:
