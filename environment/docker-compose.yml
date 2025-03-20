@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  axon-server:
+    image: axoniq/axonserver
+    container_name: axon-server
+    restart: always
+    ports:
+      - "8024:8024"  # Web UI
+      - "8124:8124"  # Messaging/Event Store
+    volumes:
+      - axon-data:/data  # Persistent data storage
+      
+volumes:
+  axon-data:
