@@ -28,7 +28,6 @@ public class BookCommandController {
                 true  // Assume book is initially available
         );
 
-
         return commandGateway.sendAndWait(command);
 
     }
