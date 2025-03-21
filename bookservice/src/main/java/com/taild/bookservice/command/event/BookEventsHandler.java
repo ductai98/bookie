@@ -19,4 +19,31 @@ public class BookEventsHandler {
         Book book = new Book(event.getId(), event.getName(), event.getAuthor(), event.getIsAvailable());
         bookRepository.save(book);
     }
+
+    @EventHandler
+    public void on(BookUpdatedEvent event) {
+        // Handle the BookUpdatedEvent
+        Book book = bookRepository.findById(event.getId())
+                .orElseThrow(() -> new RuntimeException("Book not found id = " + event.getId()));
+        if (event.getName()!= null && !event.getName().isEmpty() && !event.getName().equals(book.getName())) {
+            book.setName(event.getName());
+        }
+
+        if (event.getAuthor()!= null && !event.getAuthor().isEmpty() && !event.getAuthor().equals(book.getAuthor())) {
+            book.setAuthor(event.getAuthor());
+        }
+
+        if (event.getIsAvailable()!= null) {
+            book.setIsAvailable(event.getIsAvailable());
+        }
+
+        bookRepository.save(book);
+    }
+
+    @EventHandler
+    public void on(BookDeletedEvent event) {
+        // Handle the BookDeletedEvent
+        bookRepository.deleteById(event.getId());
+    }
+
 }

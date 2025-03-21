@@ -2,13 +2,12 @@ package com.taild.bookservice.command.controller;
 
 
 import com.taild.bookservice.command.commands.CreateBookCommand;
+import com.taild.bookservice.command.commands.DeleteBookCommand;
+import com.taild.bookservice.command.commands.UpdateBookCommand;
 import com.taild.bookservice.command.model.BookRequestModel;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -32,5 +31,24 @@ public class BookCommandController {
 
         return commandGateway.sendAndWait(command);
 
+    }
+
+    @PutMapping("/{id}")
+    public String updateBook(@RequestBody BookRequestModel requestModel, @PathVariable String id) {
+        UpdateBookCommand command = new UpdateBookCommand(
+                id,
+                requestModel.getName(),
+                requestModel.getAuthor(),
+                requestModel.getIsAvailable()
+        );
+
+        return commandGateway.sendAndWait(command);
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteBook(@PathVariable String id) {
+        DeleteBookCommand command = new DeleteBookCommand(id);
+
+        return commandGateway.sendAndWait(command);
     }
 }
