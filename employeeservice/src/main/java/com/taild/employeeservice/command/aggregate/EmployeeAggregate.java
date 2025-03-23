@@ -1,7 +1,10 @@
 package com.taild.employeeservice.command.aggregate;
 
+import com.taild.commonservice.utils.StringUtils;
 import com.taild.employeeservice.command.commands.CreateEmployeeCommand;
+import com.taild.employeeservice.command.commands.UpdateEmployeeCommand;
 import com.taild.employeeservice.command.event.EmployeeCreatedEvent;
+import com.taild.employeeservice.command.event.EmployeeUpdatedEvent;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -40,7 +43,6 @@ public class EmployeeAggregate {
         AggregateLifecycle.apply(event);
     }
 
-
     @EventSourcingHandler
     public void handle(EmployeeCreatedEvent event) {
         this.id = event.getId();
@@ -48,5 +50,34 @@ public class EmployeeAggregate {
         this.lastName = event.getLastName();
         this.kin = event.getKin();
         this.hasDisciplined = event.getHasDisciplined();
+    }
+
+    @CommandHandler
+    public void handle(UpdateEmployeeCommand command) {
+        EmployeeUpdatedEvent event = new EmployeeUpdatedEvent(
+                command.getId(),
+                command.getFirstName(),
+                command.getLastName(),
+                command.getKin(),
+                command.getHasDisciplined()
+        );
+
+        AggregateLifecycle.apply(event);
+    }
+
+    @EventSourcingHandler
+    public void handle(EmployeeUpdatedEvent event) {
+        if (StringUtils.isNullOrEmpty(event.getFirstName())) {
+            this.firstName = event.getFirstName();
+        }
+        if (StringUtils.isNullOrEmpty(event.getLastName())) {
+            this.lastName = event.getLastName();
+        }
+        if (StringUtils.isNullOrEmpty(event.getKin())) {
+            this.kin = event.getKin();
+        }
+        if (this.hasDisciplined != null) {
+            this.hasDisciplined = event.getHasDisciplined();
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.taild.employeeservice.command.event;
 
 
+import com.taild.commonservice.utils.StringUtils;
 import com.taild.employeeservice.command.data.Employee;
 import com.taild.employeeservice.command.data.EmployeeRepository;
 import org.axonframework.eventhandling.EventHandler;
@@ -21,6 +22,29 @@ public class EmployeeEventHandler {
                 event.getLastName(),
                 event.getKin(),
                 event.getHasDisciplined());
+
+        employeeRepository.save(employee);
+    }
+
+    @EventHandler
+    public void on(EmployeeUpdatedEvent event) {
+        Employee employee = employeeRepository.findById(event.getId())
+               .orElseThrow(() -> new RuntimeException("Employee not found id = " + event.getId()));
+        if (!StringUtils.isNullOrEmpty(event.getFirstName())) {
+            employee.setFirstName(event.getFirstName());
+        }
+
+        if (!StringUtils.isNullOrEmpty(event.getLastName())) {
+            employee.setLastName(event.getLastName());
+        }
+
+        if (!StringUtils.isNullOrEmpty(event.getKin())) {
+            employee.setKin(event.getKin());
+        }
+
+        if (event.getHasDisciplined() != null) {
+            employee.setHasDisciplined(event.getHasDisciplined());
+        }
 
         employeeRepository.save(employee);
     }
