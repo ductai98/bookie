@@ -4,11 +4,14 @@ package com.taild.employeeservice.command.event;
 import com.taild.commonservice.utils.StringUtils;
 import com.taild.employeeservice.command.data.Employee;
 import com.taild.employeeservice.command.data.EmployeeRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.axonframework.eventhandling.DisallowReplay;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class EmployeeEventHandler {
 
     @Autowired
@@ -47,5 +50,20 @@ public class EmployeeEventHandler {
         }
 
         employeeRepository.save(employee);
+    }
+
+    @EventHandler
+    @DisallowReplay
+    public void on(EmployeeDeletedEvent event) {
+
+        try {
+            employeeRepository.findById(event.getId()).orElseThrow(
+                    () -> new RuntimeException("Employee not found id = " + event.getId())
+            );
+        } catch (RuntimeException e) {
+             log.error(e.getMessage());        }
+
+
+        employeeRepository.deleteById(event.getId());
     }
 }

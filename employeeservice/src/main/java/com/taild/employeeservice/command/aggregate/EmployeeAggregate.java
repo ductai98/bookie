@@ -2,8 +2,10 @@ package com.taild.employeeservice.command.aggregate;
 
 import com.taild.commonservice.utils.StringUtils;
 import com.taild.employeeservice.command.commands.CreateEmployeeCommand;
+import com.taild.employeeservice.command.commands.DeleteEmployeeCommand;
 import com.taild.employeeservice.command.commands.UpdateEmployeeCommand;
 import com.taild.employeeservice.command.event.EmployeeCreatedEvent;
+import com.taild.employeeservice.command.event.EmployeeDeletedEvent;
 import com.taild.employeeservice.command.event.EmployeeUpdatedEvent;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -79,5 +81,19 @@ public class EmployeeAggregate {
         if (this.hasDisciplined != null) {
             this.hasDisciplined = event.getHasDisciplined();
         }
+    }
+
+    @CommandHandler
+    public void handle(DeleteEmployeeCommand command) {
+        AggregateLifecycle.apply(new EmployeeDeletedEvent(command.getId()));
+    }
+
+    @EventSourcingHandler
+    public void handle(EmployeeDeletedEvent event) {
+        this.id = event.getId();
+        this.firstName = null;
+        this.lastName = null;
+        this.kin = null;
+        this.hasDisciplined = null;
     }
 }

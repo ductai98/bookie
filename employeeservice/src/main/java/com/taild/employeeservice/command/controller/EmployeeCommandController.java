@@ -2,6 +2,7 @@ package com.taild.employeeservice.command.controller;
 
 
 import com.taild.employeeservice.command.commands.CreateEmployeeCommand;
+import com.taild.employeeservice.command.commands.DeleteEmployeeCommand;
 import com.taild.employeeservice.command.commands.UpdateEmployeeCommand;
 import com.taild.employeeservice.command.model.EmployeeCreateModel;
 import com.taild.employeeservice.command.model.EmployeeUpdateModel;
@@ -41,6 +42,12 @@ public class EmployeeCommandController {
                 model.getHasDisciplined()
         );
 
+        commandGateway.sendAndWait(command);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteEmployee(@PathVariable String id) {
+        DeleteEmployeeCommand command = new DeleteEmployeeCommand(id);
         commandGateway.sendAndWait(command);
     }
 }
