@@ -3,6 +3,7 @@ package com.taild.bookservice.command.event;
 
 import com.taild.bookservice.command.data.Book;
 import com.taild.bookservice.command.data.BookRepository;
+import com.taild.commonservice.event.BookStatusUpdatedEvent;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -44,6 +45,16 @@ public class BookEventsHandler {
     public void on(BookDeletedEvent event) {
         // Handle the BookDeletedEvent
         bookRepository.deleteById(event.getId());
+    }
+
+    @EventHandler
+    public void on(BookStatusUpdatedEvent event) {
+        Book book = bookRepository.findById(event.getBookId())
+                .orElseThrow(() -> new RuntimeException("Book not found id = " + event.getBookId()));
+
+        book.setIsAvailable(event.isAvailable());
+
+        bookRepository.save(book);
     }
 
 }

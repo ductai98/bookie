@@ -4,6 +4,7 @@ package com.taild.bookservice.query.controller;
 import com.taild.bookservice.query.model.BookResponseModel;
 import com.taild.bookservice.query.queries.GetAllBooksQuery;
 import com.taild.bookservice.query.queries.GetBookByIdQuery;
+import com.taild.commonservice.model.BookResponseCommonModel;
 import com.taild.commonservice.services.KafkaService;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;
@@ -30,10 +31,10 @@ public class BookQueryController {
     }
 
     @GetMapping("/{id}")
-    public BookResponseModel getBookById(@PathVariable String id) {
+    public BookResponseCommonModel getBookById(@PathVariable String id) {
         GetBookByIdQuery query = new GetBookByIdQuery(id);
 
-        return queryGateway.query(query, ResponseTypes.instanceOf(BookResponseModel.class)).join();
+        return queryGateway.query(query, ResponseTypes.instanceOf(BookResponseCommonModel.class)).join();
     }
 
     @PostMapping("/sendMessage")

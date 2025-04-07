@@ -6,6 +6,7 @@ import com.taild.bookservice.command.data.BookRepository;
 import com.taild.bookservice.query.model.BookResponseModel;
 import com.taild.bookservice.query.queries.GetAllBooksQuery;
 import com.taild.bookservice.query.queries.GetBookByIdQuery;
+import com.taild.commonservice.model.BookResponseCommonModel;
 import org.axonframework.queryhandling.QueryHandler;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +34,10 @@ public class BookProjection {
 
 
     @QueryHandler
-    public BookResponseModel handle(GetBookByIdQuery query) {
+    public BookResponseCommonModel handle(GetBookByIdQuery query) {
         Book book = bookRepository.findById(query.getId())
                 .orElseThrow(() -> new RuntimeException("Book not found id = " + query.getId()))  ;
 
-        return modelMapper.map(book, BookResponseModel.class);
+        return modelMapper.map(book, BookResponseCommonModel.class);
     }
 }

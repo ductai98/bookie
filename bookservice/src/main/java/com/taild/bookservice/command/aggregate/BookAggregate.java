@@ -7,6 +7,8 @@ import com.taild.bookservice.command.commands.UpdateBookCommand;
 import com.taild.bookservice.command.event.BookCreateEvent;
 import com.taild.bookservice.command.event.BookDeletedEvent;
 import com.taild.bookservice.command.event.BookUpdatedEvent;
+import com.taild.commonservice.commands.UpdateStatusBookCommand;
+import com.taild.commonservice.event.BookStatusUpdatedEvent;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -77,5 +79,22 @@ public class BookAggregate {
     @EventSourcingHandler
     public void on(BookDeletedEvent event) {
         this.id = event.getId();
+    }
+
+    @CommandHandler
+    public void handler(UpdateStatusBookCommand command) {
+        BookStatusUpdatedEvent event = new BookStatusUpdatedEvent(
+                command.getBookId(),
+                command.isAvailable(),
+                command.getEmployeeId(),
+                command.getBorrowId()
+        );
+        AggregateLifecycle.apply(event);
+    }
+
+    @EventSourcingHandler
+    public void on(BookStatusUpdatedEvent event) {
+        this.id = event.getBookId();
+        this.isAvailable = event.isAvailable();
     }
 }
