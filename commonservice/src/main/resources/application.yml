@@ -1,19 +1,20 @@
 
 
 spring:
+  application:
+    name: commonservice
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     consumer:
       group-id: ${KAFKA_GROUP_ID:default-group}
-  application:
-    name: commonservice
   mail:
     host: smtp.gmail.com
     port: 587
     username: ronin52014@gmail.com
+    password: pcos ggqy mfdb ycfb
     properties:
       mail:
-        smptp:
+        smtp:
           auth: true
           starttls:
             enable: true

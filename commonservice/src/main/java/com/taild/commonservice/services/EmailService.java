@@ -18,7 +18,6 @@ public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
-
     /**
      * Send email with optional attachments
      * @param to email address
@@ -55,4 +54,5 @@ public class EmailService {
             //TODO Handle retry logic
         }
     }
+
 }
