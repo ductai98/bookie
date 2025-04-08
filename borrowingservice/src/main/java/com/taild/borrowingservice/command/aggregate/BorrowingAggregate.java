@@ -2,7 +2,9 @@ package com.taild.borrowingservice.command.aggregate;
 
 
 import com.taild.borrowingservice.command.commands.CreateBorrowingCommand;
+import com.taild.borrowingservice.command.commands.DeleteBorrowingCommand;
 import com.taild.borrowingservice.command.event.BorrowingCreatedEvent;
+import com.taild.borrowingservice.command.event.BorrowingDeletedEvent;
 import lombok.NoArgsConstructor;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -35,11 +37,27 @@ public class BorrowingAggregate {
     }
 
 
+    @CommandHandler
+    public void handle(DeleteBorrowingCommand command) {
+        AggregateLifecycle.apply(new BorrowingDeletedEvent(command.getId()));
+    }
+
+
+
     @EventSourcingHandler
     public void on(BorrowingCreatedEvent event) {
         this.id = event.getId();
         this.bookId = event.getBookId();
         this.employeeId = event.getEmployeeId();
         this.borrowDate = event.getBorrowDate();
+    }
+
+    @EventSourcingHandler
+    public void on(BorrowingDeletedEvent event) {
+        this.id = event.getId();
+        this.bookId = null;
+        this.employeeId = null;
+        this.borrowDate = null;
+        this.returnDate = null;
     }
 }

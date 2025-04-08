@@ -7,6 +7,8 @@ import org.axonframework.eventhandling.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class BorrowingEventHandler {
 
@@ -21,5 +23,11 @@ public class BorrowingEventHandler {
                 event.getBorrowDate(),
                 null);
         borrowingRepository.save(entity);
+    }
+
+    @EventHandler
+    public void on(BorrowingDeletedEvent event) {
+        Optional<Borrowing> borrowing = borrowingRepository.findById(event.getId());
+        borrowing.ifPresent(b -> borrowingRepository.delete(b));
     }
 }

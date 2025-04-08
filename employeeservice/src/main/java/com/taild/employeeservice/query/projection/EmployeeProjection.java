@@ -1,11 +1,12 @@
 package com.taild.employeeservice.query.projection;
 
 
+import com.taild.commonservice.model.EmployeeResponseCommonModel;
+import com.taild.commonservice.queries.GetEmployeeDetailsQuery;
 import com.taild.employeeservice.command.data.Employee;
 import com.taild.employeeservice.command.data.EmployeeRepository;
 import com.taild.employeeservice.query.model.EmployeeResponseModel;
 import com.taild.employeeservice.query.queries.GetAllEmployeeQuery;
-import com.taild.employeeservice.query.queries.GetDetailEmployeeQuery;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.queryhandling.QueryHandler;
 import org.modelmapper.ModelMapper;
@@ -39,12 +40,12 @@ public class EmployeeProjection {
     }
 
     @QueryHandler
-    public EmployeeResponseModel handle(GetDetailEmployeeQuery query) {
+    public EmployeeResponseCommonModel handle(GetEmployeeDetailsQuery query) {
         try {
             Employee employee = employeeRepository.findById(query.getId())
                     .orElseThrow(() -> new RuntimeException("Employee not found id = " + query.getId()));
 
-            return modelMapper.map(employee, EmployeeResponseModel.class);
+            return modelMapper.map(employee, EmployeeResponseCommonModel.class);
         } catch (RuntimeException e) {
             log.error(e.getMessage());
             return null;

@@ -1,9 +1,10 @@
 package com.taild.employeeservice.query.controller;
 
 
+import com.taild.commonservice.model.EmployeeResponseCommonModel;
+import com.taild.commonservice.queries.GetEmployeeDetailsQuery;
 import com.taild.employeeservice.query.model.EmployeeResponseModel;
 import com.taild.employeeservice.query.queries.GetAllEmployeeQuery;
-import com.taild.employeeservice.query.queries.GetDetailEmployeeQuery;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +28,10 @@ public class EmployeeQueryController {
     }
 
     @GetMapping("/{id}")
-    public EmployeeResponseModel getEmployeeById(@PathVariable String id) {
+    public EmployeeResponseCommonModel getEmployeeById(@PathVariable String id) {
         return queryGateway
-                .query(new GetDetailEmployeeQuery(id),
-                        ResponseTypes.instanceOf(EmployeeResponseModel.class)
+                .query(new GetEmployeeDetailsQuery(id),
+                        ResponseTypes.instanceOf(EmployeeResponseCommonModel.class)
                 ).join();
     }
 }
