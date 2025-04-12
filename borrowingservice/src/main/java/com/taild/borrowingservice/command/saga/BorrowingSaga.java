@@ -7,6 +7,7 @@ import com.taild.borrowingservice.command.event.BorrowingDeletedEvent;
 import com.taild.commonservice.commands.RollbackBookStatusCommand;
 import com.taild.commonservice.commands.UpdateBookStatusCommand;
 import com.taild.commonservice.event.BookStatusRollBackedEvent;
+import com.taild.commonservice.event.BookStatusUpdatedEvent;
 import com.taild.commonservice.model.BookResponseCommonModel;
 import com.taild.commonservice.model.EmployeeResponseCommonModel;
 import com.taild.commonservice.queries.GetBookDetailsQuery;
@@ -61,7 +62,7 @@ public class BorrowingSaga {
 
 
     @SagaEventHandler(associationProperty = "bookId")
-    private void handle(UpdateBookStatusCommand command) {
+    private void handle(BookStatusUpdatedEvent command) {
         log.info("Saga updating book status, bookId = {}, isAvailable = {}", command.getBookId(), command.isAvailable());
 
         try {
@@ -70,7 +71,7 @@ public class BorrowingSaga {
             if (model.isHasDisciplined()) {
                 throw new Exception("Employee has disciplined, rolling back borrowing");
             } else {
-                log.info("Book borrowing successfuls");
+                log.info("Book borrowing successful");
                 SagaLifecycle.end();
             }
         } catch (Exception e) {
@@ -98,9 +99,10 @@ public class BorrowingSaga {
         rollbackBorrowing(event.getBorrowId());
     }
 
-    @SagaEventHandler(associationProperty = "bookId")
+    @SagaEventHandler(associationProperty = "id")
     public void handle(BorrowingDeletedEvent event) {
         log.info("Deleting borrowing, id = {}", event.getId());
+        SagaLifecycle.end();
     }
 
 }
