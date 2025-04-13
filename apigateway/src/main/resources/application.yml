@@ -27,15 +27,26 @@ spring:
                 redis-rate-limiter.burstCapacity: 20
                 redis-rate-limiter.requestedTokens: 1
             - KeyAuthFilter
+        - id: book-service
+          uri: lb://bookservice
+          predicates:
+            - Path=/api/v1/books/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 10
+                redis-rate-limiter.burstCapacity: 20
+                redis-rate-limiter.requestedTokens: 1
+            - KeyAuthFilter
 
 
 
 eureka:
   instance:
-    hostname: localhost
+    hostname: discoverserver
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://discoverserver:8761/eureka/
       register-with-eureka: true
       fetch-registry: true
 
