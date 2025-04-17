@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: discovery-server-deployment
+  labels:
+    app: discovery-server-label
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: discovery-server-label
+  template:
+    metadata:
+      labels:
+        app: discovery-server-label
+    spec:
+      containers:
+        - name: discoveryserver
+          image: bookie-discoveryserver
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8761

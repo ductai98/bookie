@@ -6,10 +6,10 @@ networks:
 
 
 services:
-  discoverserver:
+  discoveryserver:
     build:
       context: .
-      dockerfile: discoverserver/Dockerfile
+      dockerfile: discoveryserver/Dockerfile
     ports:
       - "8761:8761"
     networks:
@@ -24,7 +24,7 @@ services:
     networks:
       - microservice-networks
     depends_on:
-      - discoverserver
+      - discoveryserver
       - axonserver
     environment:
       - "AXONIQ_AXONSERVER_SERVERS=axonserver:8024"
@@ -67,7 +67,7 @@ services:
     networks:
       - microservice-networks
     depends_on:
-      - discoverserver
+      - discoveryserver
       - redis
 
   redis:

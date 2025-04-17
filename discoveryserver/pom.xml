@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.taild</groupId>
-	<artifactId>discoverserver</artifactId>
+	<artifactId>discoveryserver</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>discoverserver</name>
-	<description>Discover Server for library project</description>
+	<name>discoveryserver</name>
+	<description>Discovery Server for library project</description>
 	<url/>
 	<licenses>
 		<license/>

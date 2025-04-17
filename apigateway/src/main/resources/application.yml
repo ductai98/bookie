@@ -43,10 +43,10 @@ spring:
 
 eureka:
   instance:
-    hostname: discoverserver
+    hostname: discoveryserver
   client:
     serviceUrl:
-      defaultZone: http://discoverserver:8761/eureka/
+      defaultZone: http://discoveryserver:8761/eureka/
       register-with-eureka: true
       fetch-registry: true
 
