@@ -8,6 +8,7 @@ services:
     build:
       context: .
       dockerfile: discoveryserver/Dockerfile
+    image: "lductai98/discoveryserver:latest"
     ports:
       - "8761:8761"
     networks:
