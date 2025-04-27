@@ -35,7 +35,6 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_KEY }}
-          passphrase: 1597856845
           port: ${{ secrets.SERVER_PORT }}
           envs: DOCKER_USERNAME
           script_path: scripts/deploy.sh
